@@ -1,4 +1,4 @@
-
+pip3 install subsample 
 
 mkdir -p data/yellow/yearmo
 mkdir -p data/yellow/samples 
@@ -10,6 +10,7 @@ do
 	do 
 		wget -O yearmo/yellow_tripdata_$YEAR_$MONTH.csv \
 		https://s3.amazonaws.com/nyc-tlc/trip+data/yellow_tripdata_$YEAR-$MONTH.csv
+		
 		subsample -r -n 2000 yearmo/yellow_tripdata_$YEAR_$MONTH.csv \
 		> samples/yellow_sample_$YEAR_$MONTH.csv
 	done 
