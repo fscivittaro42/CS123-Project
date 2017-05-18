@@ -5,20 +5,19 @@
 
 from mrjob.job import MRJob
 
-class TaxiAvgFare(MRJob):
+TAXIDATA = open("yellow2016subsample.csv")
+
+class TaxiRouteComp(MRJob):
 
     def mapper(self, _, line):
     	column = line.split(',')
-    	fare = float(column[12])
-    	tip = float(column[15])
-    	if fare != 0 and tip != 0:
-    	    proportion = float(tip)/float(fare)
-    	    yield None, proportion
+    	comp_start = TAXIDATA[column[1]][5]
+        comp_end = TAXIDATA[column[1]][6]
+    	yield None, (comp_start, comp_end)
 
-    def reducer(self, _, proportion):
-    	proportion_list = list(proportion)
-    	yield None, sum(proportion_list)/len(proportion_list)
+    def reducer(self, _, comp):
+    	yield None, comp
 
 
 if __name__ == '__main__':
-    TaxiAvgFare.run()
+    TaxiRouteComp.run()
