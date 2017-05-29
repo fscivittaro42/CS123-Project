@@ -7,6 +7,7 @@ will be treated as negligible and not considered for these calculattions.
 '''
 
 from shapely.geometry import LineString
+from shapely.geometry import asShape
 import math
 
 def get_squares(trip1, trip2):
@@ -23,18 +24,16 @@ def get_squares(trip1, trip2):
     '''
     segment1 = get_segment(trip1)
     segment2 = get_segment(trip2)
-
-    if segment1.contains(segment2) or segment2.contains(segment1):
-        intersect = segment1.intersection(segment2)
-        line = list(intersect.coords)
-        coor1 = (line[0][0] + 0.1, line[0][1] - 0.1)
-        coor2 = (line[0][0] - 0.1, line[0][1] + 0.1)
-        coor3 = (line[1][0] + 0.1, line[1][1] - 0.1)
-        coor4 = (line[1][0] - 0.1, line[1][1] + 0.1)
-        return (coor1, coor2, coor3, coor4)
-
+       
     if segment1.intersects(segment2):
         intersection = segment1.intersection(segment2)
+        line = list(intersection.coords)
+        if len(line) > 1:
+            coor1 = (line[0][0] + 0.1, line[0][1] - 0.1)
+            coor2 = (line[0][0] - 0.1, line[0][1] + 0.1)
+            coor3 = (line[1][0] + 0.1, line[1][1] - 0.1)
+            coor4 = (line[1][0] - 0.1, line[1][1] + 0.1)
+            return (coor1, coor2, coor3, coor4)
     else:
         return None
 
@@ -42,6 +41,10 @@ def get_squares(trip1, trip2):
     y = intersection.y
 
     angle = get_angle(segment1, segment2, (x,y))
+
+    if angle == 90:
+        return None
+
     scale_factor = 1 - (angle / 90)
 
     diag1 = get_diag_coor(segment1, scale_factor, intersection)
@@ -86,8 +89,16 @@ def get_angle(seg1, seg2, intersect):
     vector1 = (seg1start[0] - intersect[0], seg1start[1] - intersect[1])
     vector2 = (seg2start[0] - intersect[0], seg2start[1] - intersect[1])
 
+    if vector1[0] == 0 and vector1[1] == 0:
+        seg1end = list(seg1.coords)[1]
+        vector1 = (seg1end[0] - intersect[0], seg1end[1] - intersect[1])
+    if vector2[0] == 0 and vector2[1] == 0:
+        seg2end = list(seg2.coords)[1]
+        vector2 = (seg2end[0] - intersect[0], seg2end[1] - intersect[1])
+
     mag1 = math.sqrt(vector1[0]**2 + vector1[1]**2)
     mag2 = math.sqrt(vector2[0]**2 + vector2[1]**2)
+
     dot_product = (vector1[0] * vector2[0] + vector1[1] * vector2[1])
 
     cos_theta = dot_product / (mag1 * mag2)
@@ -113,24 +124,10 @@ def get_diag_coor(segment, scale_factor, intersect):
     vector1 = (coords[0][0] - intersect[0], coords[0][1] - intersect[1])
     vector2 = (coords[1][0] - intersect[0], coords[1][1] - intersect[1])
 
-    mag1 = math.sqrt(vector1[0]**2 + vector1[1]**2)
-    mag2 = math.sqrt(vector2[0]**2 + vector2[1]**2)
+    x1 = intersect[0] + (vector1[0] * scale_factor)
+    y1 = intersect[1] + (vector1[1] * scale_factor)
 
-    adj_mag1 = scale_factor * mag1
-    adj_mag2 = scale_factor * mag2
-
-    if adj_mag1 == 0:
-        x1 = coords[0][0]
-        y1 = coords[0][1]
-    else:
-        x1 = intersect[0] + (vector1[0] / adj_mag1)
-        y1 = intersect[1] + (vector1[1] / adj_mag1)
-
-    if adj_mag2 == 0:
-        x2 = coords[1][0]
-        y2 = coords[1][1]
-    else:
-        x2 = intersect[0] + (vector2[0] / adj_mag2)
-        y2 = intersect[1] + (vector2[1] / adj_mag2)
+    x2 = intersect[0] + (vector2[0] * scale_factor)
+    y2 = intersect[1] + (vector2[1] * scale_factor)
 
     return ((x1, y1), (x2, y2))
