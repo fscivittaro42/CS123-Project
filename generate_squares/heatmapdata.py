@@ -22,7 +22,6 @@ class MRGetHeatMaps(MRJob):
         inside the polygon. 
         '''
         fields = line.split(',')
-        print(fields)
         c1 = (float(fields[0]), float(fields[1]))
         c2 = (float(fields[2]), float(fields[3]))
         c3 = (float(fields[4]), float(fields[5]))
@@ -30,15 +29,15 @@ class MRGetHeatMaps(MRJob):
 
         polygon = Polygon([c1,c2,c3,c4])
 
-        xmin = round(min(c1[0], c2[0], c3[0], c4[0]), 2)
-        xmax = round(max(c1[0], c2[0], c3[0], c4[0]), 2)
-        ymin = round(min(c1[1], c2[1], c3[1], c4[1]), 2)
-        ymax = round(max(c1[1], c2[1], c3[1], c4[1]), 2)
+        xmin = round(min(c1[0], c2[0], c3[0], c4[0]), 3)
+        xmax = round(max(c1[0], c2[0], c3[0], c4[0]), 3)
+        ymin = round(min(c1[1], c2[1], c3[1], c4[1]), 3)
+        ymax = round(max(c1[1], c2[1], c3[1], c4[1]), 3)
 
         for i in small_range(xmin, xmax):
             for j in small_range(ymin, ymax):
                 if polygon.intersects(Point(i,j)):
-                    yield (round(i,2),round(j,2)), 1
+                    yield (round(i,3),round(j,3)), 1
 
     
     def combiner(self, coor, counts):
@@ -80,9 +79,9 @@ def small_range(start, stop):
         r: the length of the segment in pieces of width 0.001 degrees
     '''
     r = start
-    while r < stop:
+    while r <= stop:
         yield r
-        r += 0.01
+        r += 0.001
 
 if __name__ == '__main__':
     MRGetHeatMaps.run()

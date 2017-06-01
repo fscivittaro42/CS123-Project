@@ -7,7 +7,6 @@ will be treated as negligible and not considered for these calculattions.
 '''
 
 from shapely.geometry import LineString
-from shapely.geometry import asShape
 import math
 
 def get_squares(trip1, trip2):
@@ -31,8 +30,8 @@ def get_squares(trip1, trip2):
         if len(line) > 1:
             coor1 = (line[0][0] + 0.1, line[0][1] - 0.1)
             coor2 = (line[0][0] - 0.1, line[0][1] + 0.1)
-            coor3 = (line[1][0] + 0.1, line[1][1] - 0.1)
-            coor4 = (line[1][0] - 0.1, line[1][1] + 0.1)
+            coor3 = (line[1][0] - 0.1, line[1][1] + 0.1)
+            coor4 = (line[1][0] + 0.1, line[1][1] - 0.1)
             return (coor1, coor2, coor3, coor4)
     else:
         return None
