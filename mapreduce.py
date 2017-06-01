@@ -3,6 +3,7 @@ import time
 import mrjob
 from mrjob.job import MRJob
 import os
+import threading 
 cwd = os.getcwd()
 
 TAXI_ID = 1
@@ -17,12 +18,15 @@ DROPOFF_AREA = 9
 
 
 class MRrides(MRJob):
+
+
 	#OUTPUT_PROTOCOL = mrjob.protocol.JSONValueProtocol
 	#MRJob.HADOOP_OUTPUT_FORMAT = 'textOutputFormat.separatorText', ','
 	#MRJob.hadoop_output_format('textOutputFormat')
 
-	F = open(cwd + "/fout2.csv", 'w')
-	W = csv.writer(F)
+	MRJob.JOBCONF = {'mapred.tasktracker.reduce.tasks.maximum': 1, \
+		'mapred.reduce.tasks': 1}
+	
 
 	def mapper(self, _, line):
 
@@ -58,14 +62,20 @@ class MRrides(MRJob):
 		yield cab_day, 
 	'''
 
-	#def reducer_init(self):
-		#self.f = open(cwd + "/out.csv", 'w')
-		#self.w = csv.writer(self.f)
+	def reducer_init(self):
+		self.count = 0
+		self.f = open(cwd + "/out.csv", 'w')
+		self.w = csv.writer(self.f)
+		self.count += 1
+		print(self.count)
+
 
 
 	def reducer(self, cab_day, trips):
 		#trips = list(trips)
-		W.writerow((cab_day, sum(trips)))
+
+		self.w.writerow((cab_day, sum(trips)))
+
 		#out = [cab_day, sum(trips)]
 		#yield cab_day, sum(trips)
 
