@@ -60,17 +60,18 @@ class MRrides(MRJob):
 	def combiner(self, cab_day, trips):
 	'''
 
-	#def reducer_init(self):
-		#self.f = open("/mnt/storage/out.csv", 'w')
-		#self.w = csv.writer(self.f)
+	def reducer_init(self):
+		self.f = open("/mnt/storage/out.csv", 'w')
+		self.w = csv.writer(self.f)
 
 
 
 	def reducer(self, cab_day, trips):
 		#trips = list(trips)
+		trips = sum(trips)
 
 		#self.w.writerow((cab_day, sum(trips)))
-		yield cab_day, sum(trips)
+		yield cab_day, trips
 
 		#out = [cab_day, sum(trips)]
 		#yield cab_day, sum(trips)
