@@ -63,9 +63,9 @@ class MRrides(MRJob):
 
 	def reducer(self, cab_day, trips):
 		#trips = list(trips)
-		#self.w.writerow((cab_day, sum(trips)))
+		W.writerow((cab_day, sum(trips)))
 		#out = [cab_day, sum(trips)]
-		yield cab_day, sum(trips)
+		#yield cab_day, sum(trips)
 
 		#if len(trips) > 1:
 			#self.w.writerow((cab_day, trips))
