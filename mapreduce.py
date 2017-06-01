@@ -3,7 +3,6 @@ import time
 import mrjob
 from mrjob.job import MRJob
 import os
-import threading 
 cwd = os.getcwd()
 
 TAXI_ID = 1
@@ -24,8 +23,8 @@ class MRrides(MRJob):
 	#MRJob.HADOOP_OUTPUT_FORMAT = 'textOutputFormat.separatorText', ','
 	#MRJob.hadoop_output_format('textOutputFormat')
 
-	MRJob.JOBCONF = {'mapred.tasktracker.reduce.tasks.maximum': 1, \
-		'mapred.reduce.tasks': 1}
+	MRJob.JOBCONF = {'mapred.tasktracker.reduce.tasks.maximum': '1', \
+		'mapred.reduce.tasks': '1', 'mapreduce.job.reduces':'1'}
 	
 
 	def mapper(self, _, line):
@@ -59,15 +58,11 @@ class MRrides(MRJob):
 
 	'''
 	def combiner(self, cab_day, trips):
-		yield cab_day, 
 	'''
 
 	def reducer_init(self):
-		self.count = 0
 		self.f = open("/mnt/storage/out.csv", 'w')
 		self.w = csv.writer(self.f)
-		self.count += 1
-		print(self.count)
 
 
 
