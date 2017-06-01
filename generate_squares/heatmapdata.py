@@ -22,23 +22,25 @@ class MRGetHeatMaps(MRJob):
         inside the polygon. 
         '''
         fields = line.split(',')
-        c1 = fields[0]
-        c2 = fields[1]
-        c3 = fields[2]
-        c4 = fields[3]
+        print(fields)
+        c1 = (float(fields[0]), float(fields[1]))
+        c2 = (float(fields[2]), float(fields[3]))
+        c3 = (float(fields[4]), float(fields[5]))
+        c4 = (float(fields[6]), float(fields[7]))
 
         polygon = Polygon([c1, c2, c3, c4])
 
-        xmin = round(min(c1[0], c2[0], c3[0], c4[0]), 3)
-        xmax = round(max(c1[0], c2[0], c3[0], c4[0]), 3)
-        ymin = round(min(c1[1], c2[1], c3[1], c4[1]), 3)
-        ymax = round(max(c1[1], c2[1], c3[1], c4[1]), 3)
+        xmin = round(min(c1[0], c2[0], c3[0], c4[0]), 2)
+        xmax = round(max(c1[0], c2[0], c3[0], c4[0]), 2)
+        ymin = round(min(c1[1], c2[1], c3[1], c4[1]), 2)
+        ymax = round(max(c1[1], c2[1], c3[1], c4[1]), 2)
 
         for i in small_range(xmin, xmax):
             for j in small_range(ymin, ymax):
                 if polygon.intersects(Point(i,j)):
-                    yield (i,j), 1
+                    yield (round(i,2),round(j,2)), 1
 
+    
     def combiner(self, coor, counts):
         '''
         A combiner method that increments the counts of each unique grid
@@ -51,7 +53,7 @@ class MRGetHeatMaps(MRJob):
         yield coor, sum(counts)
 
     def reducer_init(self):
-        self.f = open("coor_counts.csv", "w")
+        self.f = open("coor_counts.csv", 'w')
         self.w = csv.writer(self.f)
 
     def reducer(self, coor, counts):
@@ -63,7 +65,7 @@ class MRGetHeatMaps(MRJob):
         Yields:
             counts: The counts associated with each square in the grid
         '''
-        self.w.writerow([coor, sum(counts)])
+        self.w.writerow([coor[0], coor[1], sum(counts)])
 
 def small_range(start, stop):
     '''
@@ -80,7 +82,7 @@ def small_range(start, stop):
     r = start
     while r < stop:
         yield r
-        r += 0.001 
+        r += 0.01 
 
 if __name__ == '__main__':
     MRGetHeatMaps.run()
