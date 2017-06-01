@@ -15,7 +15,7 @@ DROP_LONG = 21
 PICKUP_AREA = 8
 DROPOFF_AREA = 9
 
-FIL = open("/mnt/storage/out.csv", 'w')
+FIL = open("/mnt/storage/out2.csv", 'w')
 W = csv.writer(FIL)
 
 
