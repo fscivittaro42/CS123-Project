@@ -14,7 +14,7 @@ DROP_LAT = 20
 DROP_LONG = 21
 PICKUP_AREA = 8
 DROPOFF_AREA = 9
-F = open(cwd + "/out.csv", 'w')
+F = open(cwd + "/fout.csv", 'w')
 W = csv.writer(F)
 
 class MRrides(MRJob):
