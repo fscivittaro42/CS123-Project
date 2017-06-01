@@ -60,9 +60,10 @@ class MRrides(MRJob):
 	def combiner(self, cab_day, trips):
 	'''
 
-	#def reducer_init(self):
-		#self.f = open("~/mnt/storage/out.csv", 'w')
-		#self.w = csv.writer(self.f)
+	def reducer_init(self):
+		print("INITING")
+		self.f = open("/mnt/storage/out.csv", 'w')
+		self.w = csv.writer(self.f)
 
 
 	def reducer(self, cab_day, trips):
