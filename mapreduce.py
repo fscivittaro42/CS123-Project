@@ -15,6 +15,9 @@ DROP_LONG = 21
 PICKUP_AREA = 8
 DROPOFF_AREA = 9
 
+FIL = open("/mnt/storage/out.csv", 'w')
+W = csv.writer(FIL)
+
 
 class MRrides(MRJob):
 
@@ -60,16 +63,17 @@ class MRrides(MRJob):
 	def combiner(self, cab_day, trips):
 	'''
 
-	def reducer_init(self):
-		print("INITING")
-		self.f = open("/mnt/storage/out.csv", 'w')
-		self.w = csv.writer(self.f)
+	#def reducer_init(self):
+		#print("INITING")
+		#self.f = open("/mnt/storage/out.csv", 'w')
+		#self.w = csv.writer(self.f)
 
 
 	def reducer(self, cab_day, trips):
 		#trips = list(trips)
 		trips = sum(trips)
 		#self.w.writerow((cab_day, trips))
+		W.writerow((cab_day, trips))
 		yield cab_day, trips
 
 		#out = [cab_day, sum(trips)]
