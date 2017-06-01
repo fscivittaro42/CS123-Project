@@ -64,7 +64,7 @@ class MRrides(MRJob):
 
 	def reducer_init(self):
 		self.count = 0
-		self.f = open(cwd + "/out.csv", 'w')
+		self.f = open("/mnt/storage/out.csv", 'w')
 		self.w = csv.writer(self.f)
 		self.count += 1
 		print(self.count)
