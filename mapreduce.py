@@ -24,7 +24,7 @@ class MRrides(MRJob):
 	#MRJob.hadoop_output_format('textOutputFormat')
 
 	MRJob.JOBCONF = {'mapred.tasktracker.reduce.tasks.maximum': '1', \
-		'mapred.reduce.tasks': '1', 'mapreduce.job.reduces':'1'}
+		'mapreduce.job.reduces':'1'}
 	
 
 	def mapper(self, _, line):
@@ -60,16 +60,17 @@ class MRrides(MRJob):
 	def combiner(self, cab_day, trips):
 	'''
 
-	def reducer_init(self):
-		self.f = open("/mnt/storage/out.csv", 'w')
-		self.w = csv.writer(self.f)
+	#def reducer_init(self):
+		#self.f = open("/mnt/storage/out.csv", 'w')
+		#self.w = csv.writer(self.f)
 
 
 
 	def reducer(self, cab_day, trips):
 		#trips = list(trips)
 
-		self.w.writerow((cab_day, sum(trips)))
+		#self.w.writerow((cab_day, sum(trips)))
+		yield cab_day, sum(trips)
 
 		#out = [cab_day, sum(trips)]
 		#yield cab_day, sum(trips)
