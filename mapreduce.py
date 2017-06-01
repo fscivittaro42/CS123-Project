@@ -3,7 +3,7 @@ import time
 import mrjob
 from mrjob.job import MRJob
 import os
-cwd = os.getcwd()
+#cwd = os.getcwd()
 
 TAXI_ID = 1
 TRIP_START = 2
