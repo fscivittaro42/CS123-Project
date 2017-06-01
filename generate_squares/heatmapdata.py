@@ -8,9 +8,18 @@ from mrjob.job import MRJob
 
 class MRGetHeatMaps(MRJob):
     '''
+    A mapreduce class that inherits properties from the MRJob class. This
+    class will mapreduce coordinates representing the corners of a polygon and
+    output each unique coordinate in each polygon along with the count 
+    associated with each coordinate, where the polygon represents the 
+    approximate location of where a pair of taxi trips could coincide. 
     '''
+
     def mapper(self, _, line):
         '''
+        A mapper method that reads the lines of a CSV file containing the data
+        representing a polygon and passes the coordinates representing a grid
+        inside the polygon. 
         '''
         fields = line.split(',')
         c1 = fields[0]
@@ -32,16 +41,41 @@ class MRGetHeatMaps(MRJob):
 
     def combiner(self, coor, counts):
         '''
+        A combiner method that increments the counts of each unique grid
+        coordinate.
+        Inputs:
+            coor: A coordinate representing one square in a grid
+        Yields:
+            counts: The counts associated with each square in the grid
         '''
-        yield coor, counts
+        yield coor, sum(counts)
+
+    def reducer_init(self):
+        self.f = open("coor_counts.csv", "w")
+        self.w = csv.writer(self.f)
 
     def reducer(self, coor, counts):
         '''
+        A reducer method that increments the counts of each unique grid 
+        coordinate and outputs the final counts.
+        Inputs:
+            coor: A coordinate representing one square in a grid
+        Yields:
+            counts: The counts associated with each square in the grid
         '''
-        yield coor, counts
+        self.w.writerow([coor, sum(counts)])
 
 def small_range(start, stop):
     '''
+    A helper function that allows the mapper method to iterate over the grids
+    in the squares. This helper function results in each grid in the square
+    being 0.001 degrees of longitude by 0.001 degrees of latitude.
+
+    Inputs:
+        start: where the iteration should start
+        stop: where the interation should end
+    Yields:
+        r: the length of the segment in pieces of width 0.001 degrees
     '''
     r = start
     while r < stop:
