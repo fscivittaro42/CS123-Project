@@ -28,7 +28,7 @@ class MRGetHeatMaps(MRJob):
         c3 = (float(fields[4]), float(fields[5]))
         c4 = (float(fields[6]), float(fields[7]))
 
-        polygon = Polygon([c1, c2, c3, c4])
+        polygon = Polygon([c1,c2,c3,c4])
 
         xmin = round(min(c1[0], c2[0], c3[0], c4[0]), 2)
         xmax = round(max(c1[0], c2[0], c3[0], c4[0]), 2)
@@ -53,7 +53,7 @@ class MRGetHeatMaps(MRJob):
         yield coor, sum(counts)
 
     def reducer_init(self):
-        self.f = open("coor_counts.csv", 'w')
+        self.f = open("/home/student/CS123-Project/generate_squares/coor_counts.csv", 'w')
         self.w = csv.writer(self.f)
 
     def reducer(self, coor, counts):
@@ -82,7 +82,7 @@ def small_range(start, stop):
     r = start
     while r < stop:
         yield r
-        r += 0.01 
+        r += 0.01
 
 if __name__ == '__main__':
     MRGetHeatMaps.run()
