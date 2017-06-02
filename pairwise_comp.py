@@ -47,9 +47,11 @@ class MRCompare(MRJob):
 			compare_end = (comp_end_lat, comp_end_long)
 
 			if compare_id != ride_id:
-				if start != ("", "") and end != ("", ""):
-					if compare_start != ("", "") and compare_end != ("", ""):
-						yield (start, end), (compare_start, compare_end)
+				if comp_start_lat != "" and comp_start_long != "":
+					if comp_end_lat != "" and comp_end_long != "":
+						if start_lat != "" and start_long != "":
+							if end_lat != "" and end_long != "":
+								yield (start, end), (compare_start, compare_end)
 
 
 
