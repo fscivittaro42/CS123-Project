@@ -1,10 +1,9 @@
-import csv
 import time
 from datetime import datetime
 import mrjob
 from mrjob.job import MRJob
 from mrjob.step import MRStep
-import os
+#import os
 #cwd = os.getcwd()
 
 TAXI_ID = 1
@@ -40,7 +39,6 @@ class MRlikelihood(MRJob):
 		start_day = headers[TRIP_START][0:10]
 		
 		try:
-			#print(headers[TRIP_START][10:], headers[TRIP_END][10:])
 			start_time = time.strptime(headers[TRIP_START][10:].strip() , 
 				self.in_fmt)
 			start_time = time.strftime(self.out_fmt, start_time)
@@ -56,7 +54,6 @@ class MRlikelihood(MRJob):
 
 		pickup = (start_time, )
 		dropoff = (end_time, end_area)
-		#print(pickup, dropoff)
 
 		if taxi and start_day and pickup[0]  \
 			and dropoff[0] and dropoff[1]:
@@ -72,7 +69,6 @@ class MRlikelihood(MRJob):
 
 	def reducer1(self, cab_day, trips):
 		trips = list(trips)
-		print(cab_day, trips)
 
 		for trip_num in range(0, len(trips)-1):
 			start_j = trips[trip_num+1][0][0]
@@ -92,10 +88,9 @@ class MRlikelihood(MRJob):
 		num = sum(i[0] for i in results)
 		den = sum(i[1] for i in results)
 
-		yield area, (num, den)
+		yield area, num/den
 		
 
-	
 	def steps(self):
 		return [
 		  MRStep(mapper_init=self.mapper_init,
