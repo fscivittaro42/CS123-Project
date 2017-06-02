@@ -91,9 +91,11 @@ def get_angle(seg1, seg2, intersect):
     if vector1[0] == 0 and vector1[1] == 0:
         seg1end = list(seg1.coords)[1]
         vector1 = (seg1end[0] - intersect[0], seg1end[1] - intersect[1])
+
     if vector2[0] == 0 and vector2[1] == 0:
         seg2end = list(seg2.coords)[1]
         vector2 = (seg2end[0] - intersect[0], seg2end[1] - intersect[1])
+        
 
     mag1 = math.sqrt(vector1[0]**2 + vector1[1]**2)
     mag2 = math.sqrt(vector2[0]**2 + vector2[1]**2)

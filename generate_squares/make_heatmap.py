@@ -2,10 +2,9 @@
 # CS 123 Final Project
 
 import pandas as pd 
-import seaborn as sns
 import matplotlib.pyplot as plt
 import gmaps
-
+import gmaps.datasets
 
 def make_heatmap(dataset_loc):
     '''
@@ -14,6 +13,7 @@ def make_heatmap(dataset_loc):
     Inputs:
         dataset_loc: The location of the CSV file containing the data
     '''
+    gmaps.configure(api_key="AIzaSyB_j56rOXCyrKLPhEpCqkqEs6cFvX949gA")
     df = pd.read_csv(dataset_loc)
     #pivoted = df.pivot(index = "Degrees Latitude",
     #                columns = "Degrees Longitude", values = "Density")
@@ -21,13 +21,8 @@ def make_heatmap(dataset_loc):
     #plt.show()
     #plt.savefig('Chicago_Trips.png')
 
-    length = len(df)
-    lat = list(df["Degrees Latitude"])
-    lon = list(df["Degrees Longitude"])
-    density = list(df["Density"])
-
-    gmap = gmplot.GoogleMapPlotter(41.8781, 87.6298, 16)
-
-    gmap.heatmap(lat, lon)
-
-    gmap.draw("mymap.html")
+    locations = df[["Degrees Latitude", "Degrees Longitude"]]
+    weights = df["Density"]
+    fig = gmaps.figure()
+    fig.add_layer(gmaps.heatmap_layer(locations, weights=weights))
+    fig
