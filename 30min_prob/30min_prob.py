@@ -8,7 +8,7 @@
 # 
 # Usage: python3 30min_prob.py <filename.csv> 
 # Dataproc usage: python3 30min_prob.py -r dataproc
-# 	-c mrjob.conf 
+# 	-c mrjob.conf <chicago_data_filename.csv>
 
 
 import time
