@@ -11,15 +11,15 @@ from small_range import small_range
 from shapely.geometry import Point
 from shapely.geometry import Polygon
 
-TAXI_ID = 1
-TRIP_START = 2
-TRIP_END = 3
-PICKUP_LAT = 17
-PICKUP_LONG = 18
-DROP_LAT = 20
-DROP_LONG = 21
-PICKUP_AREA = 8
-DROPOFF_AREA = 9
+TAXI_ID = 2
+TRIP_START = 3
+TRIP_END = 4
+PICKUP_LAT = 18
+PICKUP_LONG = 19
+DROP_LAT = 21
+DROP_LONG = 22
+PICKUP_AREA = 9
+DROPOFF_AREA = 10
 cwd = os.getcwd()
 
 class MRCompare(MRJob):
@@ -33,8 +33,11 @@ class MRCompare(MRJob):
         A method that initializes a copy of the data CSV file so that pairs of
         trips can be generated
         '''
-        self.f = open(cwd + "/big_sample.csv")
-        self.r = csv.reader(self.f)
+        self.f = open(cwd + "/2k.csv", 'rb')
+        next(self.f)
+        self.bytes = self.f.tell()
+        self.length = self.f.seek(0,2)
+
 
     def mapper(self, _, line):
         '''
@@ -45,31 +48,35 @@ class MRCompare(MRJob):
         '''
         fields = line.split(',')
 
-        ride_id = fields[0]
-        start_lat = fields[17]
-        start_long = fields[18]
-        end_lat = fields[20]
-        end_long = fields[21]
+        row_number = fields[0]
+        ride_id = fields[2]
+        start_lat = fields[18]
+        start_long = fields[19]
+        end_lat = fields[21]
+        end_long = fields[22]
 
         start = (start_lat, start_long)
         end = (end_lat, end_long)
 
         if (start != end and start_lat != "" and start_long != "" and end_lat
         != "" and end_long != ""):
-            self.f.seek(0)
-            for compare_line in self.r:
-                compare_id = compare_line[0]
-                comp_start_lat = compare_line[17]
-                comp_start_long = compare_line[18]
-                comp_end_lat = compare_line[20]
-                comp_end_long = compare_line[21]
+            spot_in_file = (int(row_number) + 1) * self.bytes
+            self.f.seek(spot_in_file)
+            while spot_in_file < self.length:
+                spot_in_file += self.bytes
+                compare_line = next(self.f).decode('utf-8').strip().split(',')
+                compare_id = compare_line[1]
+                comp_start_lat = compare_line[18]
+                comp_start_long = compare_line[19]
+                comp_end_lat = compare_line[21]
+                comp_end_long = compare_line[22]
 
                 compare_start = (comp_start_lat, comp_start_long)
                 compare_end = (comp_end_lat, comp_end_long)
 
-                if (compare_start != compare_end and compare_id != ride_id and
-                comp_start_lat != "" and comp_start_long != "" and 
-                comp_end_lat != "" and comp_end_long != ""):
+                if (compare_start != compare_end and comp_start_lat != "" and
+                comp_start_long != "" and comp_end_lat != "" and 
+                comp_end_long != ""):
                     start = (float(start[0]), float(start[1]))
                     end = (float(end[0]), float(end[1]))
                     compare_start = (float(compare_start[0]), 
