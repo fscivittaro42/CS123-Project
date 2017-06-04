@@ -2,7 +2,7 @@
 # CMSC 123 Spring 2017
 # Chicago Taxi Data Project
 #
-# Python MapReduce code to obtain information on 
+# Python MRJob code to obtain information on 
 # the likelihood of a driver's next pickup being found 
 # within 30 minutes, aggregated by neighborhood. 
 # 
@@ -19,16 +19,15 @@ from mrjob.job import MRJob
 from mrjob.step import MRStep
 
 
-
-TAXI_ID = 1
-TRIP_START = 2
-TRIP_END = 3
-PICKUP_LAT = 17
-PICKUP_LONG = 18
-DROP_LAT = 20
-DROP_LONG = 21
-PICKUP_AREA = 8
-DROPOFF_AREA = 9
+TAXI_ID = 2
+TRIP_START = 3
+TRIP_END = 4
+PICKUP_LAT = 18
+PICKUP_LONG = 19
+DROP_LAT = 21
+DROP_LONG = 22
+PICKUP_AREA = 9
+DROPOFF_AREA = 10
 
 class MRlikelihood(MRJob):
 
