@@ -1,6 +1,10 @@
 # CMSC 123
 # Test MRJob code for NYC Yellow Taxi Data
-#
+#############################################
+# Unused in final project because Chicago 
+# dataset did not provide passenger count
+# statistics. 
+#############################################
 
 
 from mrjob.job import MRJob
