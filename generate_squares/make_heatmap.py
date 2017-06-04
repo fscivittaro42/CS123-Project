@@ -20,14 +20,9 @@ def make_heatmap(dataset_loc):
     df["Log of Density"] = df["Density"].map(math.log10)
     pivoted = df.pivot(index = "Degrees Latitude",
                     columns = "Degrees Longitude", values = "Density")
-    #pivoted1 = df.pivot(index = "Degrees Latitude",
-    #               columns = "Degrees Longitude", values = "Log of Density")
 
     ax = sns.heatmap(pivoted, xticklabels = 4, yticklabels = 4)
     ax.invert_yaxis()
-
-    #ax1 = sns.heatmap(pivoted1, xticklabels = 4, yticklabels = 4)
-    #ax1.invert_yaxis()
 
     plt.show()
     plt.savefig('Chicago_Trips.png')
