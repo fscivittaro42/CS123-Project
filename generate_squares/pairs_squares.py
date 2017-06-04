@@ -23,12 +23,26 @@ DROPOFF_AREA = 9
 cwd = os.getcwd()
 
 class MRCompare(MRJob):
-
+    '''
+    A Mapreduce class that converts pairs of trips into coordinates 
+    representing the polygon surrounding their intersections and then sums up
+    the counts of each coordinate associated with an intersection.
+    '''
     def mapper_init(self):
+        '''
+        A method that initializes a copy of the data CSV file so that pairs of
+        trips can be generated
+        '''
         self.f = open(cwd + "/big_sample.csv")
         self.r = csv.reader(self.f)
 
     def mapper(self, _, line):
+        '''
+        A mapper method that takes two trips, extracts the coordinates of the
+        startpoints and endpoints, checks if two trips intersect, and is so
+        find the space around the intersection and passes the coordinates and
+        the value 1 to the combiner
+        '''
         fields = line.split(',')
 
         ride_id = fields[0]
@@ -100,7 +114,7 @@ class MRCompare(MRJob):
         '''
         self.f = open("/home/student/CS123-Project/generate_squares/coor_counts.csv", 'w')
         self.w = csv.writer(self.f)
-        self.w.writerow(["Degrees Longitude", "Degrees Latitude", "Density"])
+        self.w.writerow(["Degrees Latitude", "Degrees Longitude", "Density"])
 
 
     def reducer(self, coor, counts):
@@ -113,9 +127,6 @@ class MRCompare(MRJob):
             counts: The counts associated with each square in the grid
         '''
         self.w.writerow([coor[0], coor[1], sum(counts)])
-        print((coor[0], coor[1]))
-        print(sum(counts))
-        print()
 
 
 if __name__ == '__main__':
