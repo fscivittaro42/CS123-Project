@@ -6,9 +6,10 @@
 # the likelihood of a driver's next pickup being found 
 # within 30 minutes, aggregated by neighborhood. 
 # 
-# Usage: python3 30min_prob.py <filename.csv> 
+# Local Usage: python3 30min_prob.py <filename.csv> 
 # Dataproc usage: python3 30min_prob.py -r dataproc
-# 	-c mrjob.conf <chicago_data_filename.csv>
+# 	-c mrjob.conf  --num-core-instances 4
+#	<chicago_data_filename.csv>
 
 
 import time
