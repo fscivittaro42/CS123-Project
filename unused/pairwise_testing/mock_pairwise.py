@@ -3,7 +3,7 @@
 # Chicago Taxi Data Project
 #
 # Exploratory code to test pairwise comparisons for
-# a csv file using MapReduce. Unused in final project.
+# a csv file using MRJob. Unused in final project.
 # 
 # Usage: python3 mock_pairwise.py mock_data.csv  
 # Dataproc usage: python3 mock_pairwise.py -r dataproc

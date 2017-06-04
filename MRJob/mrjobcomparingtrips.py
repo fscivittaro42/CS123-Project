@@ -1,4 +1,7 @@
-# CMSC 123
+# Arif-Chuang-Scivittaro
+# CMSC 123 Spring 2017
+# Chicago Taxi Data Project
+#
 # Test MRJob code for NYC Yellow Taxi Data
 # Comparing path of two trips
 #########################################################################
