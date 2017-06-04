@@ -1,6 +1,12 @@
 # CMSC 123
 # Test MRJob code for NYC Yellow Taxi Data
 # Comparing path of two trips
+#########################################################################
+# Code ultimately unused for actual project because better method was
+# found. This code took too much time to compare pairs on a 2k subsample
+# of the code indicated that it would be unrealistic to use for the 
+# full dataset. 
+########################################################################
 
 
 from mrjob.job import MRJob
@@ -13,9 +19,16 @@ TAXI_READER = csv.reader(CSVFILE)
 class TaxiTripComparison(MRJob):
     
     def mapper(self, _, line):
+        """MRJob class meant to be run on the csv output
+        by enumerate.py. Enumerate.csv contained two columns
+        generated through a nested pair of for loops."""
+        
         trips = line.split(',')
         first_row = int(trips[0])
         second_row = int(trips[1])
+        
+        # Following loops used to 
+        #
         
         CSVFILE.seek(0)
         for i in range(first_row + 1):
@@ -33,11 +46,7 @@ class TaxiTripComparison(MRJob):
 
         two_start_coord = (row2_result[5], row2_result[6])
         two_end_coord = (row2_result[9], row2_result[10])
-
-        """start_x_2 = row2_result[5]
-        start_y_2 = row2_result[6]
-        end_x_2 = row2_result[9]
-        end_y_2 = row2_result[10]"""
+        
         print(two_start_coord)
 
         yield None, ((one_start_coord, one_end_coord), (two_start_coord, two_end_coord))
