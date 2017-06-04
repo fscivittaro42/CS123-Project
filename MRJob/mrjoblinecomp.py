@@ -1,4 +1,7 @@
-# CMSC 123
+# Arif-Chuang-Scivittaro
+# CMSC 123 Spring 2017
+# Chicago Taxi Data Project
+#
 # Comparison between Line 1 and all other lines
 # Average tip as a proportion of fare
 
