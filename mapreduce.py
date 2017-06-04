@@ -1,3 +1,10 @@
+# Arif-Chuang-Scivittaro
+# CMSC 123 Spring 2017
+# Chicago Taxi Data Project
+#
+# Exploratory code to test some things with MapReduce and Dataproc.
+# Unused in final project. 
+
 import time
 import mrjob
 from mrjob.job import MRJob
@@ -63,7 +70,6 @@ class MRrides(MRJob):
 	'''
 
 	#def reducer_init(self):
-		#print("INITING")
 		#self.f = open("/mnt/storage/out.csv", 'w')
 		#self.w = csv.writer(self.f)
 
