@@ -115,10 +115,10 @@ class MRCompare(MRJob):
 
     '''
     def reducer_init(self):
-        '''
+        
         A reducer_init method that opens a CSV file, which will contain the
         final unqiue coordinates and associated counts
-        '''
+        
         self.f = open("/home/student/CS123-Project/generate_squares/coor_counts.csv", 'w')
         self.w = csv.writer(self.f)
         self.w.writerow(["Degrees Latitude", "Degrees Longitude", "Density"])
