@@ -1,3 +1,16 @@
+# Arif-Chuang-Scivittaro
+# CMSC 123 Spring 2017
+# Chicago Taxi Data Project
+#
+# Python MapReduce code to obtain information on 
+# the likelihood of a driver's next pickup being found 
+# within 30 minutes, aggregated by neighborhood. 
+# 
+# Usage: python3 30min_prob.py <filename.csv> 
+# Dataproc usage: python3 30min_prob.py -r dataproc
+# 	-c mrjob.conf 
+
+
 import time
 from datetime import datetime
 import mrjob
