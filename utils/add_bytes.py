@@ -5,6 +5,8 @@
 # Quick script to add a column of zeros to each row in a csv
 # so that all rows have the same number of bytes. 
 # Allows us to use file.seek() to jump to desired row. 
+# 
+# Usage: python3 add_bytes.py </path/to/file.csv> <-test> 
 
 import csv
 import sys
@@ -86,7 +88,7 @@ def add_bytes(file, testing):
 
 			max_length = 0
 			current_posn = 0
-
+			f.seek(0)
 			next(f)
 			diff = f.tell()
 

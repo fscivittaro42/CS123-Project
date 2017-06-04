@@ -14,4 +14,6 @@ sudo pip3 install mrjob
 sudo pip3 install subsample 
 
 
+
+
 # gcloud init

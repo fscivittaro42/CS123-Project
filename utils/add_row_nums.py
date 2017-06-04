@@ -4,6 +4,9 @@
 #
 # Quick script to add row numbers to the front of each row
 # in a data csv file. 
+#
+# Usage: python3 add_row_nums.py </path/to/file.csv>
+
 
 import csv
 import sys
@@ -12,6 +15,7 @@ def add_row_nums(file):
 
 	'''
 	file: must be full path to file. 
+		ex: ~/Desktop/project/data.csv 
 	'''
 
 	i = 0
