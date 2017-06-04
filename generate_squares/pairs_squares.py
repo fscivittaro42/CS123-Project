@@ -39,6 +39,7 @@ class MRCompare(MRJob):
         self.length = self.f.seek(0,2)
 
 
+
     def mapper(self, _, line):
         '''
         A mapper method that takes two trips, extracts the coordinates of the
@@ -76,17 +77,20 @@ class MRCompare(MRJob):
 
                 if (compare_start != compare_end and comp_start_lat != "" and
                 comp_start_long != "" and comp_end_lat != "" and 
-                comp_end_long != ""):
-                    start = (float(start[0]), float(start[1]))
-                    end = (float(end[0]), float(end[1]))
-                    compare_start = (float(compare_start[0]), 
-                        float(compare_start[1]))
-                    compare_end = (float(compare_end[0]), 
-                        float(compare_end[1]))
-                    trip1 = (start, end)
-                    trip2 = (compare_start, compare_end)
+                comp_end_long != "" ):
+                    try:
+                        start = (float(start[0]), float(start[1]))
+                        end = (float(end[0]), float(end[1]))
+                        compare_start = (float(compare_start[0]), 
+                            float(compare_start[1]))
+                        compare_end = (float(compare_end[0]), 
+                            float(compare_end[1]))
+                        trip1 = (start, end)
+                        trip2 = (compare_start, compare_end)
 
-                    polygon_coords = get_squares(trip1, trip2)
+                        polygon_coords = get_squares(trip1, trip2)
+                    except:
+                        polygon_coords = None
 
                     if polygon_coords:
                         c1,c2,c3,c4 = polygon_coords
@@ -113,16 +117,17 @@ class MRCompare(MRJob):
         '''
         yield coor, sum(counts)
 
-
+    '''
     def reducer_init(self):
-        '''
+        
         A reducer_init method that opens a CSV file, which will contain the
         final unqiue coordinates and associated counts
-        '''
+        
         self.f = open("/home/student/CS123-Project/generate_squares/coor_counts.csv", 'w')
         self.w = csv.writer(self.f)
         self.w.writerow(["Degrees Latitude", "Degrees Longitude", "Density"])
 
+    '''
 
     def reducer(self, coor, counts):
         '''
@@ -133,10 +138,13 @@ class MRCompare(MRJob):
         Yields:
             counts: The counts associated with each square in the grid
         '''
-        self.w.writerow([coor[0], coor[1], sum(counts)])
+        #self.w.writerow([coor[0], coor[1], sum(counts)])
+
+        yield (coor[0], coor[1]), sum(counts)
 
 
 if __name__ == '__main__':
+
     MRCompare.run()
 
 
