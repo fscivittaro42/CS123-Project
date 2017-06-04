@@ -6,8 +6,11 @@ cwd = os.getcwd()
 class MRcompare(MRJob):
 
 	def mapper_init(self):
-		self.f = open(cwd + "/mock_data.csv")
-		self.r = csv.reader(self.f)
+		#self.f = open(cwd + "/mock_data.csv", 'r')
+		#self.r = csv.reader(self.f)
+		self.f = open(cwd + "/mock_out.csv", 'w')
+		self.w = csv.writer(self.f)
+		
 
 
 	def mapper(self, _, line):
@@ -18,6 +21,8 @@ class MRcompare(MRJob):
 		end = fields[2]
 
 
+
+		'''
 		self.f.seek(0)
 
 		for compare_line in self.r:
@@ -28,8 +33,8 @@ class MRcompare(MRJob):
 
 			if compare_id != ride_id:
 				yield (start, end), (compare_start, compare_end)
-
-
+		'''
+		yield cwd, (ride_id, start, end)
 
 if __name__ == '__main__':
 	MRcompare.run()
