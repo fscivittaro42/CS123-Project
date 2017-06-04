@@ -16,8 +16,8 @@ from datetime import datetime
 import mrjob
 from mrjob.job import MRJob
 from mrjob.step import MRStep
-#import os
-#cwd = os.getcwd()
+
+
 
 TAXI_ID = 1
 TRIP_START = 2
@@ -113,6 +113,9 @@ class MRlikelihood(MRJob):
 		  MRStep(reducer=self.reducer2)
 		]
 	
+
+#################################################################
+
 
 
 if __name__ == '__main__':
