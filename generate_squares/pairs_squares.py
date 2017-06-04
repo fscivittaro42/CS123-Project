@@ -38,8 +38,6 @@ class MRCompare(MRJob):
         self.bytes = self.f.tell()
         self.length = self.f.seek(0,2)
 
-
-
     def mapper(self, _, line):
         '''
         A mapper method that takes two trips, extracts the coordinates of the
@@ -105,6 +103,7 @@ class MRCompare(MRJob):
                             for j in small_range(ymin, ymax):
                                 if polygon.intersects(Point(i,j)):
                                     yield (round(i,2),round(j,2)), 1
+                                    
 
     def combiner(self, coor, counts):
         '''
@@ -117,17 +116,6 @@ class MRCompare(MRJob):
         '''
         yield coor, sum(counts)
 
-    '''
-    def reducer_init(self):
-        
-        A reducer_init method that opens a CSV file, which will contain the
-        final unqiue coordinates and associated counts
-        
-        self.f = open("/home/student/CS123-Project/generate_squares/coor_counts.csv", 'w')
-        self.w = csv.writer(self.f)
-        self.w.writerow(["Degrees Latitude", "Degrees Longitude", "Density"])
-
-    '''
 
     def reducer(self, coor, counts):
         '''
@@ -138,8 +126,6 @@ class MRCompare(MRJob):
         Yields:
             counts: The counts associated with each square in the grid
         '''
-        #self.w.writerow([coor[0], coor[1], sum(counts)])
-
         yield (coor[0], coor[1]), sum(counts)
 
 
