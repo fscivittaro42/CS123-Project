@@ -113,7 +113,7 @@ class MRCompare(MRJob):
         '''
         yield coor, sum(counts)
 
-
+    '''
     def reducer_init(self):
         '''
         A reducer_init method that opens a CSV file, which will contain the
@@ -123,6 +123,7 @@ class MRCompare(MRJob):
         self.w = csv.writer(self.f)
         self.w.writerow(["Degrees Latitude", "Degrees Longitude", "Density"])
 
+    '''
 
     def reducer(self, coor, counts):
         '''
@@ -133,7 +134,9 @@ class MRCompare(MRJob):
         Yields:
             counts: The counts associated with each square in the grid
         '''
-        self.w.writerow([coor[0], coor[1], sum(counts)])
+        #self.w.writerow([coor[0], coor[1], sum(counts)])
+
+        yield None, (coor[0], coor[1], sum(counts))
 
 
 if __name__ == '__main__':
