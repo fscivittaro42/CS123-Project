@@ -33,10 +33,11 @@ class MRCompare(MRJob):
         A method that initializes a copy of the data CSV file so that pairs of
         trips can be generated
         '''
-        self.f = open(cwd + "/2k.csv", 'rb')
+        self.f = open("/Users/Salman/Desktop/Dropbox/CS123 Project/2k.csv", 'rb')
         next(self.f)
         self.bytes = self.f.tell()
         self.length = self.f.seek(0,2)
+
 
 
     def mapper(self, _, line):
@@ -76,17 +77,20 @@ class MRCompare(MRJob):
 
                 if (compare_start != compare_end and comp_start_lat != "" and
                 comp_start_long != "" and comp_end_lat != "" and 
-                comp_end_long != ""):
-                    start = (float(start[0]), float(start[1]))
-                    end = (float(end[0]), float(end[1]))
-                    compare_start = (float(compare_start[0]), 
-                        float(compare_start[1]))
-                    compare_end = (float(compare_end[0]), 
-                        float(compare_end[1]))
-                    trip1 = (start, end)
-                    trip2 = (compare_start, compare_end)
+                comp_end_long != "" ):
+                    try:
+                        start = (float(start[0]), float(start[1]))
+                        end = (float(end[0]), float(end[1]))
+                        compare_start = (float(compare_start[0]), 
+                            float(compare_start[1]))
+                        compare_end = (float(compare_end[0]), 
+                            float(compare_end[1]))
+                        trip1 = (start, end)
+                        trip2 = (compare_start, compare_end)
 
-                    polygon_coords = get_squares(trip1, trip2)
+                        polygon_coords = get_squares(trip1, trip2)
+                    except:
+                        polygon_coords = None
 
                     if polygon_coords:
                         c1,c2,c3,c4 = polygon_coords
@@ -136,10 +140,11 @@ class MRCompare(MRJob):
         '''
         #self.w.writerow([coor[0], coor[1], sum(counts)])
 
-        yield None, (coor[0], coor[1], sum(counts))
+        yield (coor[0], coor[1]), sum(counts)
 
 
 if __name__ == '__main__':
+
     MRCompare.run()
 
 
