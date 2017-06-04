@@ -1,6 +1,9 @@
-# CS 123
+# Arif-Chuang-Scivittaro
+# CMSC 123 Spring 2017
+# Chicago Taxi Data Project
 #
-#
+# Preliminary shell script to download and make samples
+# of NYC Taxi Cab data. Unused in final project. 
 
 TAXI_ID = 1
 TRIP_START = 2
