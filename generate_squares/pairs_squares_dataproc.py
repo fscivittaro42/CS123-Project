@@ -1,6 +1,13 @@
-# CMSC 123
+# Arif-Chuang-Scivittaro
+# CMSC 123 Spring 2017
+# Chicago Taxi Data Project
+#
 # MRJob code for Chicago Taxi Data
 # Comparing path of two trips
+# This is the version to use in Dataproc. 
+# Usage: python3 pairs_squares_dataproc.py -r dataproc 
+#   -c mrjob.conf --num-core-instances 4 
+#   --file <filename.csv> <filename.csv> 
 
 
 import csv
@@ -33,11 +40,10 @@ class MRCompare(MRJob):
         A method that initializes a copy of the data CSV file so that pairs of
         trips can be generated
         '''
-        self.f = open("/Users/Salman/Desktop/Dropbox/CS123 Project/2k.csv", 'rb')
+        self.f = open(cwd + '/1M.csv' + , 'rb')
         next(self.f)
         self.bytes = self.f.tell()
         self.length = self.f.seek(0,2)
-
 
 
     def mapper(self, _, line):
