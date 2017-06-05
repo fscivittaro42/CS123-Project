@@ -13,6 +13,7 @@ sudo apt-get -y install libgeos-dev
 
 sudo pip3 install mrjob 
 sudo pip3 install subsample 
+sudo pip3 install shapely 
 
 
 
