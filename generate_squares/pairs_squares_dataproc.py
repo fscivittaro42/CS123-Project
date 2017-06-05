@@ -9,7 +9,6 @@
 #   -c mrjob.conf --num-core-instances 4 
 #   --file <filename.csv> <filename.csv> 
 
-import bs4
 import csv
 import os
 from mrjob.job import MRJob
