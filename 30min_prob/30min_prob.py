@@ -58,14 +58,14 @@ class MRlikelihood(MRJob):
 		
 		try:
 			# Re-format time from 12-hour to 24-hour
-			start_time = time.strptime(headers[TRIP_START][10:].strip() , 
+			start_time = time.strptime(headers[TRIP_START][10:].strip(), 
 				self.in_fmt)
 			start_time = time.strftime(self.out_fmt, start_time)
+			
 			end_time = time.strptime(headers[TRIP_END][10:].strip(), 
 				self.in_fmt)
 			end_time = time.strftime(self.out_fmt, end_time)
 
-		
 		except:
 			start_time = None
 			end_time = None
@@ -74,13 +74,9 @@ class MRlikelihood(MRJob):
 		pickup = (start_time, )
 		dropoff = (end_time, end_area)
 
-		if taxi and start_day and pickup[0]  \
-			and dropoff[0] and dropoff[1]:
+		if taxi and start_day and pickup[0] and dropoff[0] and dropoff[1]:	
 			yield (taxi, start_day), (pickup, dropoff) 
 
-	'''
-	def combiner(self, cab_day, trips):
-	'''
 
 	def reducer_init(self):
 		self.fmt = '%H:%M'
@@ -96,13 +92,14 @@ class MRlikelihood(MRJob):
 		trips = list(trips)
 
 		for trip_num in range(0, len(trips)-1):
-			start_j = trips[trip_num+1][0][0]
-			end_i = trips[trip_num][1][0]
+			
+			start_next = trips[trip_num+1][0][0]
+			end_current = trips[trip_num][1][0]
 			end_area = trips[trip_num][1][1]
 			
 			# Find time to next pickup 
-			tdelta = datetime.strptime(end_i, self.fmt) - \
-				datetime.strptime(start_j, self.fmt)
+			tdelta = datetime.strptime(end_current, self.fmt) - \
+				datetime.strptime(start_next, self.fmt)
 			
 			got_under_30 = 1 * (tdelta.seconds/60 <= 30)
 			
@@ -133,7 +130,6 @@ class MRlikelihood(MRJob):
 	
 
 #################################################################
-
 
 
 if __name__ == '__main__':
