@@ -5,4 +5,4 @@ Calculating the likelihood of finding next passenger within 30 minutes, aggregat
 
 - 30min_prob.py: main script
 - mrjob.conf: config file for dataproc use
-- 50k_likelihoods.tsv: results for 50k subsample 
+- 5M_likelihoods.tsv: results for 5M subsample 
