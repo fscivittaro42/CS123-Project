@@ -1,5 +1,6 @@
-# Francesco Scivittaro
-# CS123 Final Project
+# Arif-Chuang-Scivittaro
+# CMSC 123 Spring 2017
+# Chicago Taxi Data Project
 
 import csv
 from shapely.geometry import Point

@@ -1,5 +1,9 @@
-# File for making heatmaps overlayed onto Google Earth
-# Scivittaro, Huang, Arif
+# Arif-Chuang-Scivittaro
+# CMSC 123 Spring 2017
+# Chicago Taxi Data Project
+
+# File for making heatmaps overlayed onto Google Earth using gmaps 
+# Requires manual use of Jupyter Notebook
 
 import gmaps
 import pandas as pd
