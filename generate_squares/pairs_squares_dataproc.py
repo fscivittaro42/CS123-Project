@@ -133,7 +133,6 @@ class MRCompare(MRJob):
         Yields:
             counts: The counts associated with each square in the grid
         '''
-        #self.w.writerow([coor[0], coor[1], sum(counts)])
 
         yield (coor[0], coor[1]), sum(counts)
 
