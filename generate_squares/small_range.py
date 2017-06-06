@@ -1,5 +1,8 @@
+# Arif-Chuang-Scivittaro
+# CMSC 123 Spring 2017
+# Chicago Taxi Data Project
+
 # File containing a helper function for generating the grid in the heat map
-# CMSC 123 Final Project
 
 def small_range(start, stop):
     '''

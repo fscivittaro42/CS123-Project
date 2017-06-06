@@ -2,14 +2,17 @@
 # CMSC 123 Spring 2017
 # Chicago Taxi Data Project
 #
-# Python MRJob code to obtain information on 
+# Python MRJob code to calculate 
 # the likelihood of a driver's next pickup being found 
-# within 30 minutes, aggregated by neighborhood. 
+# within 30 minutes, probabilites 
+# aggregated by neighborhood. 
 # 
 # Local Usage: python3 30min_prob.py <filename.csv> 
 # Dataproc usage: python3 30min_prob.py -r dataproc
 # 	-c mrjob.conf  --num-core-instances 4
 #	<chicago_data_filename.csv>
+#
+# Note: data file should be pre-processed with add_row_nums and add_bytes
 
 
 import time
@@ -31,7 +34,6 @@ DROPOFF_AREA = 10
 
 class MRlikelihood(MRJob):
 
-
 	#OUTPUT_PROTOCOL = mrjob.protocol.JSONValueProtocol
 	#MRJob.HADOOP_OUTPUT_FORMAT = 'textOutputFormat.separatorText', ','
 	#MRJob.hadoop_output_format('textOutputFormat')
@@ -40,26 +42,30 @@ class MRlikelihood(MRJob):
 		#'mapreduce.job.reduces':'1'}
 	
 	def mapper_init(self):
+		# Formatting for times in data file
 		self.in_fmt = '%I:%M:%S %p'
 		self.out_fmt = '%H:%M'
 	
 
 	def mapper(self, _, line):
-
+		'''
+		Constructs the 'route' for every (cab, date) pair. 
+		'''
 		headers = line.split(',')
 		taxi = headers[TAXI_ID]
 		end_area = headers[DROPOFF_AREA]
 		start_day = headers[TRIP_START][0:10]
 		
 		try:
-			start_time = time.strptime(headers[TRIP_START][10:].strip() , 
+			# Re-format time from 12-hour to 24-hour
+			start_time = time.strptime(headers[TRIP_START][10:].strip(), 
 				self.in_fmt)
 			start_time = time.strftime(self.out_fmt, start_time)
+			
 			end_time = time.strptime(headers[TRIP_END][10:].strip(), 
 				self.in_fmt)
 			end_time = time.strftime(self.out_fmt, end_time)
 
-		
 		except:
 			start_time = None
 			end_time = None
@@ -68,40 +74,50 @@ class MRlikelihood(MRJob):
 		pickup = (start_time, )
 		dropoff = (end_time, end_area)
 
-		if taxi and start_day and pickup[0]  \
-			and dropoff[0] and dropoff[1]:
+		if taxi and start_day and pickup[0] and dropoff[0] and dropoff[1]:	
 			yield (taxi, start_day), (pickup, dropoff) 
 
-	'''
-	def combiner(self, cab_day, trips):
-	'''
 
 	def reducer_init(self):
 		self.fmt = '%H:%M'
 
 
 	def reducer1(self, cab_day, trips):
+		'''
+		Takes in a list of trips for a (cab, date) and 
+		yields whether or not each dropoff was followed
+		by another pickup within 30 minutes, aggregated
+		by dropoff area. 
+		'''
 		trips = list(trips)
 
 		for trip_num in range(0, len(trips)-1):
-			start_j = trips[trip_num+1][0][0]
-			end_i = trips[trip_num][1][0]
-			end_area = trips[trip_num + 1][1][1]
 			
-
-			tdelta = datetime.strptime(end_i, self.fmt) - \
-				datetime.strptime(start_j, self.fmt)
+			start_next = trips[trip_num+1][0][0]
+			end_current = trips[trip_num][1][0]
+			end_area = trips[trip_num][1][1]
+			
+			# Find time to next pickup 
+			tdelta = datetime.strptime(start_next, self.fmt) - \
+			datetime.strptime(end_current, self.fmt)
+				
 			
 			got_under_30 = 1 * (tdelta.seconds/60 <= 30)
+			
 			yield int(end_area), (got_under_30, 1)
 
 	
 	def reducer2(self, area, results):
+		'''
+		Takes in the results from reducer1 and finds the 
+		probabilities of finding next ride within 30 minutes, 
+		aggregated by community area (neighborhood). 
+		'''
 		results = list(results)
-		num = sum(i[0] for i in results)
-		den = sum(i[1] for i in results)
+		got_within_30 = sum(i[0] for i in results)
+		total_dropoffs = sum(i[1] for i in results)
 
-		yield area, num/den
+		yield area, got_within_30/total_dropoffs
 		
 
 	def steps(self):
@@ -115,7 +131,6 @@ class MRlikelihood(MRJob):
 	
 
 #################################################################
-
 
 
 if __name__ == '__main__':
