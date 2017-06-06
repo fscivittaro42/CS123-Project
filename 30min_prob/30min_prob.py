@@ -98,8 +98,9 @@ class MRlikelihood(MRJob):
 			end_area = trips[trip_num][1][1]
 			
 			# Find time to next pickup 
-			tdelta = datetime.strptime(end_current, self.fmt) - \
-				datetime.strptime(start_next, self.fmt)
+			tdelta = datetime.strptime(start_next, self.fmt) - \
+			datetime.strptime(end_current, self.fmt)
+				
 			
 			got_under_30 = 1 * (tdelta.seconds/60 <= 30)
 			
