@@ -5,7 +5,7 @@ Analyzing the Chicago Taxi Trips dataset (https://data.cityofchicago.org/Transpo
 
 - generate_squares/: Creating congestion heatmaps for Chicago based on where taxi trips intercept
 
-- 30min_prob/: Calculating the likelihood of a driver finding their next passenger within 30 minutes, aggregated by neighborhood. 
+- 30min_prob/: Calculating the likelihood of a driver finding their next passenger within 30 minutes, aggregated by neighborhood
 
 - MRJob/: Some MRJob scripts to calculate summary statistics
 
