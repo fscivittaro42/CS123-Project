@@ -1,5 +1,6 @@
-# Francesco Scivittaro, Salman Arif, Andrew Chuang
-# CS123 Final Project
+# Arif-Chuang-Scivittaro
+# CMSC 123 Spring 2017
+# Chicago Taxi Data Project
 
 '''
 NOTE: Given the relatively small size of Chicago, the curvature of the earth
