@@ -19,7 +19,7 @@ DROPOFF_AREA = 10
 FARE = 11
 TIPS = 12
 
-class monthlyavgfare(MRJob):
+class nbhdavgfare(MRJob):
 
 	def mapper(self, _, line):
 
@@ -52,4 +52,4 @@ class monthlyavgfare(MRJob):
 
 
 if __name__ == '__main__':
-	monthlyavgfare.run()
+	nbhdavgfare.run()
