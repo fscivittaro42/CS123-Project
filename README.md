@@ -1,5 +1,6 @@
 # CS123-Project
 Final Big Data project for [CMSC 12300](https://www.classes.cs.uchicago.edu/archive/2017/spring/12300-1/) at the University of Chicago 
+
 Analyzing the Chicago Taxi Trips dataset (https://data.cityofchicago.org/Transportation/Taxi-Trips/wrvz-psew). 
 
 - generate_squares/: Creating congestion heatmaps for Chicago based on where taxi trips intercept
