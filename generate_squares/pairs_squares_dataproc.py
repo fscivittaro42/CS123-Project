@@ -40,7 +40,7 @@ class MRCompare(MRJob):
         A method that initializes a copy of the data CSV file so that pairs of
         trips can be generated
         '''
-        self.f = open(cwd + '/50k.csv', 'rb')
+        self.f = open(cwd + '/5k.csv', 'rb')
         next(self.f)
         self.bytes = self.f.tell()
         self.length = self.f.seek(0,2)
