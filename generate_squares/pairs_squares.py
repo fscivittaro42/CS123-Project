@@ -1,7 +1,8 @@
-# CMSC 123
+# Arif-Chuang-Scivittaro
+# CMSC 123 Spring 2017
+# Chicago Taxi Data Project
+#
 # MRJob code for Chicago Taxi Data
-# Comparing path of two trips
-
 
 import csv
 import os
@@ -103,7 +104,7 @@ class MRCompare(MRJob):
                             for j in small_range(ymin, ymax):
                                 if polygon.intersects(Point(i,j)):
                                     yield (round(i,2),round(j,2)), 1
-                                    
+
 
     def combiner(self, coor, counts):
         '''
